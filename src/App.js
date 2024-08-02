@@ -8,6 +8,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { DetailsPages } from "./pages/details/DetailsPages"
 import { Account } from "./pages/account/Account"
 import { Create } from "./components/create/Create"
+import axios from 'axios';
+
+
+axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.withCredentials=true
 
 const App = () => {
   return (
