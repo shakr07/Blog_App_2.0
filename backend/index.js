@@ -4,7 +4,7 @@ const cors=require('cors');
 const authRoutes = require("./routes/authRoutes");
 const mongoose =require("mongoose")
 const app=express();
-
+const cookieParser=require('cookie-parser')
 
 //database connection
 const url = process.env.mongo_URL;
@@ -20,6 +20,9 @@ connectToMongoDB();
 
 app.use(express.json());
 
+//using the middle ware cookie parser to aloow cookie one host to another
+app.use(cookieParser());
+app.use(express.urlencoded({extended:false}))
 
 app.use('/',authRoutes)
 

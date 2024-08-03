@@ -10,7 +10,7 @@ import { Account } from "./pages/account/Account";
 import { Create } from "./components/create/Create";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
-
+import { UserContextProvider } from "./context/userContext";
 // Set up axios defaults
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
@@ -24,7 +24,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Regsiter/>} />
+          <Route path="/register" element={<Regsiter />} />
           <Route path="/details/:id" element={<DetailsPages />} />
           <Route path="/account" element={<Account />} />
           <Route path="/create" element={<Create />} />

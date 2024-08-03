@@ -7,6 +7,7 @@ const {
   test,
   registerUser,
   loginUser,
+  getjwt,
 } = require("../controllers/authControllers");
 
 // Middleware of the sites
@@ -21,5 +22,5 @@ router.use(
 router.get("/", test);
 router.post("/register",registerUser); 
 router.post("/login",loginUser); 
-
+router.get("/jwt_check",getjwt)
 module.exports = router;

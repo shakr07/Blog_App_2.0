@@ -1,5 +1,8 @@
 const User = require("../model/user");
 const {hashPassword,comparePassword}=require('../routes/authbycrpt')
+const jwt=require('jsonwebtoken');
+const dotenv=require('dotenv').config();
+
 const test = (req, res) => {
   res.json("test is working");
 };
@@ -59,7 +62,17 @@ try {
   //if password match or not
   const check = await comparePassword(password, user.password);
   if(check){
-    res.json('password match')
+    
+     //password match so its time  for jwt
+
+     jwt.sign({email:user.email,id:user._id,name:user.name},process.env.jwt_secret,{},(err,token)=>{
+      if(err) throw err;
+      console.log(token);
+      
+      res.cookie('token',token).json(user)
+     })
+      
+
   }else{
     res.json({
       error: "password Do not match calm bruh!!!",
@@ -72,5 +85,17 @@ try {
 
 
 }
+const getjwt=(req,res)=>{
+const {token}=req.cookies;
+if(token){
+  jwt.verify(token,process.env.jwt_secret,{},(err,user)=>{
+   if(err) throw err;
+   res.json(user)
+  })
+}
+else{
+  res.json(null);
+}
+}
 
-module.exports = { test, registerUser, loginUser };
+module.exports = { test, registerUser, loginUser,getjwt };
