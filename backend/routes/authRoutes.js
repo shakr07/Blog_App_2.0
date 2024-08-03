@@ -10,6 +10,9 @@ const {
   getjwt,
   createBlog,
   Allblogs,
+  deleteblogs,
+  updateblogs,
+  singleblogs,
 } = require("../controllers/authControllers");
 
 // Middleware of the sites
@@ -26,5 +29,9 @@ router.post("/register",registerUser);
 router.post("/login",loginUser); 
 router.get("/jwt_check",getjwt);
 router.post("/create",createBlog);
-router.get("/blogs",Allblogs)
+router.get("/blogs",Allblogs);
+router.delete("/delete/:id", deleteblogs);
+router.put("/update/:id", updateblogs);
+router.get("/single/:id",singleblogs);
+
 module.exports = router;

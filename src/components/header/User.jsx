@@ -16,10 +16,7 @@ export const User = () => {
               <IoCreateOutline className="icon" />
               <h4>Create Post</h4>
             </Link>
-            <Link to="/create" className="option">
-              <MdDeleteForever className="icon" />
-              <h4>Delete</h4>
-            </Link>
+
            
           </div>
         </>

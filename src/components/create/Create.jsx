@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./create.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 export const Create = () => {
+   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     author: "",
     title: "",
@@ -25,7 +27,7 @@ export const Create = () => {
       const response = await axios.post("/create", formData);
       if (response.data.success) {
         toast.success("Blog created successfully");
-        
+        navigate("/")
       }
     } catch (error) {
       toast.error("Error creating blog:", error);

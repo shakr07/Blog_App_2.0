@@ -124,4 +124,66 @@ const Allblogs=async(req,res)=>{
 }
 
 
-module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs};
+//deleting the blog
+
+const deleteblogs=async(req,res)=>{
+     
+  try {
+    const id = req.params.id;
+     const deletedBlog = await Blog.findByIdAndDelete(id);
+        if (!deletedBlog) {
+          return res.status(404).json({ message: "not found" });
+        }
+
+        res.status(200).json({ message: " deleted successfully" });
+  } catch (error) {
+        console.error( error);
+        res.status(500).json({ message: "Error deleting blog post" });
+  }
+ 
+}
+
+
+//updating the blogs
+const updateblogs=async(req,res)=>{
+ try {
+   const blogId = req.params.id;
+   const updatedBlog = await Blog.findByIdAndUpdate(blogId, req.body, {
+     new: true,
+     runValidators: true,
+   });
+
+   if (!updatedBlog) {
+     return res.status(404).json({ message: "not found" });
+   }
+
+   res.status(200).json({ message: "updated successfully", data: updatedBlog });
+ } catch (error) {
+   console.error( error);
+   res.status(500).json({ message: "Error updating blog post" });
+ }
+}
+
+//getting single blog
+
+const singleblogs = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    console.log(blogId);
+    
+    const blog = await Blog.findById(blogId);
+    console.log(blog);
+    
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    res.json({ success: true, data: blog });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
+
+
+module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs};

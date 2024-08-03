@@ -4,8 +4,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+
 export const Login = () => {
-  const navigate = useNavigate();
+const navigate = useNavigate();  
   const [data, setData] = useState({
     email: "",
     password: "",
