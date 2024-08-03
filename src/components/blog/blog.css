@@ -17,7 +17,7 @@
   margin-bottom: 20px;
 }
 .blog .icon {
-  margin-right: 10px;
+  margin-right: 5px;
   font-size: 20px;
 }
 .blog .tag a {
@@ -28,6 +28,7 @@
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+   gap: 5px; 
 }
 .blog h3 {
   font-weight: 500;

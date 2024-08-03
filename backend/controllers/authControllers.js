@@ -1,4 +1,5 @@
 const User = require("../model/user");
+const Blog=require("../model/Blog")
 const {hashPassword,comparePassword}=require('../routes/authbycrpt')
 const jwt=require('jsonwebtoken');
 const dotenv=require('dotenv').config();
@@ -98,4 +99,29 @@ else{
 }
 }
 
-module.exports = { test, registerUser, loginUser,getjwt };
+//creating endpoimt for creating the bog
+const createBlog=async (req,res)=>{
+  try {
+    const newBlog = new Blog(req.body);
+    await newBlog.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({  message: error.message });
+  }
+
+}
+
+
+//getting all the 
+const Allblogs=async(req,res)=>{
+  try {
+     const blogs=await Blog.find({});
+    res.json({ success: true, data: blogs });
+  } catch (error) {
+    res.status(500).json({  message: "Server Error" });
+  }
+ 
+}
+
+
+module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs};

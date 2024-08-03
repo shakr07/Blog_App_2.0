@@ -8,6 +8,8 @@ const {
   registerUser,
   loginUser,
   getjwt,
+  createBlog,
+  Allblogs,
 } = require("../controllers/authControllers");
 
 // Middleware of the sites
@@ -22,5 +24,7 @@ router.use(
 router.get("/", test);
 router.post("/register",registerUser); 
 router.post("/login",loginUser); 
-router.get("/jwt_check",getjwt)
+router.get("/jwt_check",getjwt);
+router.post("/create",createBlog);
+router.get("/blogs",Allblogs)
 module.exports = router;
