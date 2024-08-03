@@ -3,7 +3,11 @@ const router = express.Router();
 const cors = require("cors");
 
 // Importing the controller
-const { test,registerUser } = require("../controllers/authControllers");
+const {
+  test,
+  registerUser,
+  loginUser,
+} = require("../controllers/authControllers");
 
 // Middleware of the sites
 router.use(
@@ -15,6 +19,7 @@ router.use(
 
 // Define the route
 router.get("/", test);
-router.get("/register",registerUser);
+router.post("/register",registerUser); 
+router.post("/login",loginUser); 
 
 module.exports = router;
