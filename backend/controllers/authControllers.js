@@ -3,47 +3,41 @@ const Blog=require("../model/Blog")
 const {hashPassword,comparePassword}=require('../routes/authbycrpt')
 const jwt=require('jsonwebtoken');
 const dotenv=require('dotenv').config();
-
+const Like=require("../model/Like")
 const test = (req, res) => {
   res.json("test is working");
 };
-
-
+let currentUsername = null;
 //registratin controllers
 const registerUser = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-
-    // Check if name was entered
-    if (!name) {
-      return res.json({
-        error: "Name is required",
-      });
-    }
-
-    // Check if the password is good
-    if (!password || password.length < 6) {
-      return res.json({
-        error: "Password is required and should be at least 6 characters long",
-      });
-    }
-
-    // Check if the email already exists
-    const exist = await User.findOne({ email });
-    if (exist) {
-      return res.json({
-        error: "Email is already taken",
-      });
-    }
-   
-     const hashedPassword=await hashPassword(password)
-    // Creating a new user
-    const user = await User.create({ name, email,password: hashedPassword});
-    res.json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
+ try {
+   const { name, email, password } = req.body;
+   if (!name) {
+     return res.json({
+       error: "Name is required",
+     });
+   }
+   // Check if the password is good
+   if (!password || password.length < 6) {
+     return res.json({
+       error: "Password is required and should be at least 6 characters long",
+     });
+   }
+   // Check if the email already exists
+   const exist = await User.findOne({ email });
+   if (exist) {
+     return res.json({
+       error: "Email is already taken",
+     });
+   }
+   const hashedPassword = await hashPassword(password);
+   // Creating a new user
+   const user = await User.create({ name, email, password: hashedPassword });
+   res.json(user);
+ } catch (error) {
+   console.error(error);
+   res.status(500).json({ error: "Server error" });
+ }
 };
 
 
@@ -65,7 +59,7 @@ try {
   if(check){
     
      //password match so its time  for jwt
-
+        currentUsername = user.name;
      jwt.sign({email:user.email,id:user._id,name:user.name},process.env.jwt_secret,{},(err,token)=>{
       if(err) throw err;
       console.log(token);
@@ -184,6 +178,58 @@ const singleblogs = async (req, res) => {
 };
 
 
+//like endpoint
+const likeblogs=async(req,res)=>{
+    try {
+      const blogId = req.params.id;
+      const userId = currentUsername; // Ensure userId is correct
+
+      console.log(`Blog ID: ${blogId}`);
+      console.log(`User ID: ${userId}`);
+
+      let like = await Like.findOne({ blogId });
+
+      if (!like) {
+        like = new Like({
+          blogId,
+          likedBy: [userId],
+          likesCount: 1,
+        });
+        await like.save();
+        console.log("Created new like entry.");
+      } else {
+        console.log("Existing like entry found.");
+        // Check if the user has already liked the blog
+        const userLiked = like.likedBy.some(
+          (id) => id.toString() === userId.toString()
+        );
+
+        if (userLiked) {
+          // Unlike the blog
+          like.likedBy = like.likedBy.filter(
+            (id) => id.toString() !== userId.toString()
+          );
+          like.likesCount -= 1;
+          console.log("Removed user like.");
+        } else {
+          // Like the blog
+          like.likedBy.push(userId);
+          like.likesCount += 1;
+          console.log("Added user like.");
+        }
+        await like.save();
+      }
+
+      // Update the blog with the number of likes
+      await Blog.findByIdAndUpdate(blogId, { likesCount: like.likesCount });
+
+      res.status(200).json({ success: true, like });
+    } catch (error) {
+      console.error("Error handling like:", error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+}
 
 
-module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs};
+
+module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs,likeblogs};

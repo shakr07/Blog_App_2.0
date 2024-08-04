@@ -12,10 +12,13 @@ import {
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Spinner from "../../spinner/Spinner";
+import toast from "react-hot-toast";
 export const Card = () => {
   const [blogs, setBlogs] = useState([]);
   const [error, setError] = useState(null);
+  const [likes, setLikes] = useState({});
+   const username = localStorage.getItem("username");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,23 +34,51 @@ export const Card = () => {
     };
     fetchBlogs();
   }, [navigate]);
-   
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/delete/${id}`);
       setBlogs(blogs.filter((blog) => blog._id !== id));
     } catch (error) {
       console.error("Error deleting post:", error);
-      alert("Failed to delete post");
+      toast.error("Failed to delete post");
     }
   };
 
   //Editing wala cheez
-  const  handleEdit=(id)=>{
+  const handleEdit = (id) => {
     navigate(`/update/${id}`);
-  }
+  };
 
-  if (error) return <div>{error}</div>;
+  //Content of blog wala cheez
+  const Content = (id) => {
+    navigate(`/details/${id}`);
+  };
+
+  //liked
+ const handleLike=async(id)=>{
+    try {
+      console.log(username);
+      
+      const response = await axios.post(`/like/${id}`,{username});
+      console.log("Response Data:", response.data); // Add logging
+      if (response.data.success) {
+        setLikes((prevLikes) => ({
+          ...prevLikes,
+          [id]: response.data.like.likesCount,
+        }));
+      } else {
+        console.error("Failed to update like count.");
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+      toast.error("Failed to like post");
+    }
+ }
+
+
+
+  if (error) return <Spinner/>;
 
   return (
     <section className="blog">
@@ -57,11 +88,11 @@ export const Card = () => {
             <div className="img">
               <img src={item.imageUrl} alt={item.title} />
             </div>
-            <div className="details">
-              <div className="tag">
+            <div className="details" >
+              <div className="tag" >
                 <AiOutlineAudit className="icon" />
                 <p>{item.author}</p>
-                <AiOutlineTags className="icon" />
+                <AiOutlineTags className="icon"  />
                 <a href="/">#{item.tag}</a>
               </div>
               <Link to={`/details/${item._id}`} className="link">
@@ -79,12 +110,16 @@ export const Card = () => {
                 <AiOutlineDelete
                   className="icon"
                   onClick={() => handleDelete(item._id)}
+                  style={{ cursor: "pointer", color: "b lack" }}
+                />
+                <AiOutlineLike
+                  className="icon"
+                  onClick={() => handleLike(item._id)}
                   style={{ cursor: "pointer", color: "orange" }}
                 />
-                <AiOutlineLike className="icon" />
                 <AiOutlineEye
                   className="icon"
-                  onClick={() => handleDelete(item._id)}
+                  onClick={() => Content(item._id)}
                   style={{ cursor: "pointer", color: "red" }}
                 />
               </div>

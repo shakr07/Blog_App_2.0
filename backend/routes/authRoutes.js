@@ -13,6 +13,7 @@ const {
   deleteblogs,
   updateblogs,
   singleblogs,
+  likeblogs,
 } = require("../controllers/authControllers");
 
 // Middleware of the sites
@@ -23,7 +24,7 @@ router.use(
   })
 );
 
-// Define the route
+// Defining the route
 router.get("/", test);
 router.post("/register",registerUser); 
 router.post("/login",loginUser); 
@@ -33,5 +34,6 @@ router.get("/blogs",Allblogs);
 router.delete("/delete/:id", deleteblogs);
 router.put("/update/:id", updateblogs);
 router.get("/single/:id",singleblogs);
+router.get("/like/:id", likeblogs);
 
 module.exports = router;
