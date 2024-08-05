@@ -6,7 +6,7 @@ Just after how to start section there is some info  and problems related to proj
 
 ### Frontend
 
-1. Open the terminal
+1. Open the terminal:  ```sh
 2. Run `📋 npm i`
 3. Run `📋 npm start`
 
@@ -52,4 +52,4 @@ Just after how to start section there is some info  and problems related to proj
 
 1. Clone the repo:
    ```sh
-   📋 git clone https://github.com/your_username/your_repo_name.git
+   📋 git clone  https://github.com/shakr07/Blog_App_2.0.git
