@@ -6,7 +6,7 @@ Just after how to start section there is some info  and problems related to proj
 A
 ### Frontend
 
-1. Open the terminal:  ```sh
+1. Open the terminal:    ```sh
 2. Run  `📋 npm i`
 3. Run `📋 npm start`
 
