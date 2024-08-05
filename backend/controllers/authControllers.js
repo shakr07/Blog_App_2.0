@@ -17,13 +17,13 @@ const registerUser = async (req, res) => {
        error: "Name is required",
      });
    }
-   // Check if the password is good
+   //  if the password is good
    if (!password || password.length < 6) {
      return res.json({
        error: "Password is required and should be at least 6 characters long",
      });
    }
-   // Check if the email already exists
+   //  if the email already exists
    const exist = await User.findOne({ email });
    if (exist) {
      return res.json({
@@ -44,42 +44,47 @@ const registerUser = async (req, res) => {
 //login controllers
 const loginUser=async(req,res)=>{
 try {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body; // Include username in the request body
 
-  //check user exist or not
+  //  if the user exists
   const user = await User.findOne({ email });
   if (!user) {
     return res.json({
-      error: "Make a account Do not hurry bruh!!!",
+      error: "Make an account. Do not hurry, bruh!",
     });
   }
 
-  //if password match or not
-  const check = await comparePassword(password, user.password);
-  if(check){
-    
-     //password match so its time  for jwt
-        currentUsername = user.name;
-     jwt.sign({email:user.email,id:user._id,name:user.name},process.env.jwt_secret,{},(err,token)=>{
-      if(err) throw err;
-      console.log(token);
-      
-      res.cookie('token',token).json(user)
-     })
-      
+  //  if the username matches
+  if (user.name !== username) {
+    return res.json({
+      error: "Username does not match the email provided.",
+    });
+  }
 
-  }else{
+  //  if the password matches
+  const check = await comparePassword(password, user.password);
+  if (check) {
+    // Password matches, proceed with JWT
+    const token = jwt.sign(
+      { email: user.email, id: user._id, name: user.name },
+      process.env.jwt_secret,
+      {}
+    );
+    console.log(token);
+
+    res.cookie("token", token).json(user);
+  } else {
     res.json({
-      error: "password Do not match calm bruh!!!",
+      error: "Password does not match. Calm down, bruh!",
     });
   }
 } catch (error) {
   console.log(error);
-  
+  res.status(500).json({ error: "An error occurred. Please try again." });
+}
 }
 
 
-}
 const getjwt=(req,res)=>{
 const {token}=req.cookies;
 if(token){
@@ -180,56 +185,68 @@ const singleblogs = async (req, res) => {
 
 //like endpoint
 const likeblogs=async(req,res)=>{
-    try {
-      const blogId = req.params.id;
-      const userId = currentUsername; // Ensure userId is correct
+   try {
+     const blogId = req.params.id;
+     const username = req.params.username;
 
-      console.log(`Blog ID: ${blogId}`);
-      console.log(`User ID: ${userId}`);
+     if (!blogId || !username) {
+       console.error("Blog ID or Username is missing");
+       return res
+         .status(400)
+         .json({
+           success: false,
+           message: "Blog ID and Username are required",
+         });
+     }
 
-      let like = await Like.findOne({ blogId });
+     // Find or create like entry
+     let like = await Like.findOne({ blogId });
 
-      if (!like) {
-        like = new Like({
-          blogId,
-          likedBy: [userId],
-          likesCount: 1,
-        });
-        await like.save();
-        console.log("Created new like entry.");
-      } else {
-        console.log("Existing like entry found.");
-        // Check if the user has already liked the blog
-        const userLiked = like.likedBy.some(
-          (id) => id.toString() === userId.toString()
-        );
+     if (!like) {
+       like = new Like({
+         blogId,
+         likedBy: [username],
+         likesCount: 1,
+       });
+       await like.save();
+     } else {
+       //  if the user has already liked the blog
+       if (like.likedBy.includes(username)) {
+         // Unlike the blog
+         like.likedBy = like.likedBy.filter((user) => user !== username);
+         like.likesCount -= 1;
+       } else {
+         // Like the blog
+         like.likedBy.push(username);
+         like.likesCount += 1;
+       }
+       await like.save();
+     }
 
-        if (userLiked) {
-          // Unlike the blog
-          like.likedBy = like.likedBy.filter(
-            (id) => id.toString() !== userId.toString()
-          );
-          like.likesCount -= 1;
-          console.log("Removed user like.");
-        } else {
-          // Like the blog
-          like.likedBy.push(userId);
-          like.likesCount += 1;
-          console.log("Added user like.");
-        }
-        await like.save();
-      }
+     // Update the blog with the number of likes
+     await Blog.findByIdAndUpdate(blogId, { likesCount: like.likesCount });
 
-      // Update the blog with the number of likes
-      await Blog.findByIdAndUpdate(blogId, { likesCount: like.likesCount });
-
-      res.status(200).json({ success: true, like });
-    } catch (error) {
-      console.error("Error handling like:", error);
-      res.status(500).json({ success: false, message: error.message });
-    }
+     res.status(200).json({ success: true, likesCount: like.likesCount });
+   } catch (error) {
+     console.error("Error handling like:", error);
+     res.status(500).json({ success: false, message: error.message });
+   }
 }
 
 
 
-module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs,likeblogs};
+//all the account
+
+const Account=async(req,res)=>{
+      try {
+        const user=await Blog.find({});
+        res.json({user})
+      } catch (error) {
+        res.json({
+          message:error
+        })
+      }
+}
+
+
+module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs,likeblogs,Account};

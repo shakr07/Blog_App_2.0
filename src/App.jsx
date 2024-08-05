@@ -17,28 +17,31 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import Spinner from "./spinner/Spinner";
 import { Update } from "./components/update/Update";
-
-// Set up axios defaults
+import {  useAuth } from "./context/AuthContext";
+import Logout from "./components/logout/Logout";
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
 const App = () => {
-  const [isAuth, setIsAuth] = useState(false);
+   const { isAuth, login } = useAuth();
   const [loading, setLoading] = useState(true);
-
+  console.log(isAuth);
+  
   useEffect(() => {
     axios
       .get("/jwt_check")
       .then(({ data }) => {
         if (data.user) {
-          setIsAuth(true);
+         console.log("good");
+         
+          
         } else {
-          setIsAuth(true);
+           console.log("error");
         }
       })
       .catch((error) => {
         console.error("Error checking authentication:", error);
-        setIsAuth(false);
+        
       })
       .finally(() => setLoading(false));
   }, []);
@@ -53,14 +56,19 @@ const App = () => {
         <Header />
         <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<Regsiter />} />
-          <Route path="/update/:id" element={<Update />} />
+          <Route path="/account" element={<Account />} />
+          <Route
+            path="/update/:id"
+            element={isAuth ? <Update /> : <Navigate to="/login" />}
+          />
           <Route path="/details/:id" element={<DetailsPages />} />
           <Route
-            path="/account"
-            element={isAuth ? <Account /> : <Navigate to="/login" />}
+            path="/"
+            element={isAuth ? <Home /> : <Navigate to="/login" />}
           />
           <Route
             path="/create"

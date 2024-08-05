@@ -34,13 +34,15 @@ export const Regsiter = () => {
       toast.error("Registration failed, please try again.");
     }
   };
-
+  const alreadyRegister=()=>{
+    navigate('/login')
+  }
   return (
     <section className="login">
       <div className="container">
         <div className="text">
-          <h3>Join Us</h3>
-          <h1>Register</h1>
+          <h3>Welcome to Blog_App_2.0</h3>
+          <h1>Register Please</h1>
         </div>
         <form onSubmit={registerUser}>
           <span>Username *</span>
@@ -64,6 +66,10 @@ export const Regsiter = () => {
             value={data.password}
             onChange={(e) => setData({ ...data, password: e.target.value })}
           />
+          <button className="button" onClick={alreadyRegister}>
+            Already Registered
+          </button>
+          <br />
           <button className="button">Register</button>
         </form>
       </div>

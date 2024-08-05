@@ -3,34 +3,50 @@ import "./login.css";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../context/AuthContext";
 
 export const Login = () => {
-const navigate = useNavigate();  
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
+    username: "", 
   });
+
+  const { isAuth, login } = useAuth();
 
   const loginUser = async (e) => {
     e.preventDefault();
-    const { email, password } = data;
+    const { email, password, username } = data;
 
     try {
-      const { data } = await axios.post("/login", {
+      const response = await axios.post("/login", {
         email,
         password,
+        username, 
       });
-      if (data.error) {
-        toast.error(data.error);
+
+      if (response.data.error) {
+        toast.error(response.data.error);
       } else {
+        login(true);
+        console.log(isAuth);
+         localStorage.setItem("name",username);
         setData({});
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       console.error(error);
       toast.error("Login failed, please try again.");
     }
+  };
+
+  const Register = () => {
+    navigate("/register");
+  };
+
+  const handleUsername = (e) => {
+    setData({ ...data, username: e.target.value }); 
   };
 
   return (
@@ -41,6 +57,8 @@ const navigate = useNavigate();
           <h1>Login</h1>
         </div>
         <form onSubmit={loginUser}>
+          <span>Username *</span>
+          <input type="text" required onChange={handleUsername} />
           <span>Email address *</span>
           <input
             type="email"
@@ -55,6 +73,10 @@ const navigate = useNavigate();
             value={data.password}
             onChange={(e) => setData({ ...data, password: e.target.value })}
           />
+          <button className="button" onClick={Register}>
+            New User? Please Register
+          </button>
+          <br />
           <button className="button">Log in</button>
         </form>
       </div>

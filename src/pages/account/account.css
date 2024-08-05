@@ -1,45 +1,43 @@
 .accountInfo {
   margin: 115px 0;
 }
+
 .accountInfo .container {
   padding: 50px;
   max-width: 60%;
   margin: auto;
 }
-.accountInfo .content {
-  margin-top: 80px;
+
+.accountInfo h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.author-cards {
   display: flex;
-  justify-content: flex-start;
-}
-.accountInfo .left {
-  width: 150px;
-  position: relative;
-}
-.accountInfo .right {
-  width: calc(100% - 180px);
-  margin-left: 50px;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-.accountInfo .left .img input {
-  width: 150px;
-  height: 150px;
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-}
-.accountInfo .img img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 150px;
-  height: 150px;
-  z-index: 1;
-  border-radius: 50%;
+.author-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.accountInfo .right label {
-  font-size: 17px;
-  color: #000;
-  margin-bottom: 10px;
-  display: block;
+.author-card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.author-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
 }
