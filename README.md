@@ -7,15 +7,15 @@ A brief description of what this project does and who it's for.
 ### Frontend
 
 1. Open the terminal
-2. Run `npm i`
-3. Run `npm start`
+2. Run `📋 npm i`
+3. Run `📋 npm start`
 
 ### Backend
 
 1. Open a new terminal
-2. Navigate to the backend directory with `cd backend`
-3. Run `npm i`
-4. Run `npm start`
+2. Navigate to the backend directory with `📋 cd backend`
+3. Run `📋 npm i`
+4. Run `📋 npm start`
 
 ## Important
 
@@ -46,9 +46,4 @@ A brief description of what this project does and who it's for.
 ## Logout
 
 - Logging out will clear the local storage and navigate to the login page.
-
-## Installation
-
-1. Clone the repo:
-   ```sh
-   git clone https://github.com/your_username/your_repo_name.git
+ 
