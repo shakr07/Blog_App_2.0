@@ -1,6 +1,6 @@
-# Project Title
+# Project overview
 
-A brief description of what this project does and who it's for.
+Just after how to start section there is some info  and problems related to project 
 
 ## How to Start the Project
 
@@ -19,12 +19,13 @@ A brief description of what this project does and who it's for.
 
 ## Important
 
-- Initially, JWT Auth was used, but due to an error in establishing protected routes, the Context API is now used. When login is successful, all routes are accessible to the respective components.
-- An admin profile is necessary for management, but it was not created.
+- Initially, JWT Auth was used, but due to an error in establishing protected routes, the Context API is now used. When login is successful, all routes are accessible to the respective components. I got stuck and messed up the code, which is why I deleted the main branch and created a new branch named "completed."
+- An admin profile is necessary for management, but I forgot to create one.
+- I also forgot to add the functionality for editing the user profile.
 
 ## Login and Sign Up
 
-- The application accepts username, email, and password.
+- The application accepts a username, email, and password.
 - Bcrypt is used for password verification and confidentiality.
 - Users must log in before accessing the blog.
 
@@ -46,4 +47,9 @@ A brief description of what this project does and who it's for.
 ## Logout
 
 - Logging out will clear the local storage and navigate to the login page.
- 
+
+## Installation
+
+1. Clone the repo:
+   ```sh
+   📋 git clone https://github.com/your_username/your_repo_name.git
