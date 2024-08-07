@@ -248,5 +248,17 @@ const Account=async(req,res)=>{
       }
 }
 
+//get all the likes
+const Likes=async(req,res)=>{
+  try {
+    const Liked = await Like.find({});
+    res.json({ Liked });
+  } catch (error) {
+    res.json({
+      message: error,
+    });
+  }
+}
 
-module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs,likeblogs,Account};
+
+module.exports = { test, registerUser, loginUser, getjwt, createBlog ,Allblogs,deleteblogs,updateblogs,singleblogs,likeblogs,Account,Likes};

@@ -18,7 +18,7 @@ const hashPassword = (password) => {
   });
 };
 
-const comparePassword = (password, hashed) => {
+const comparePassword  = (password, hashed) => {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hashed, (err, result) => {
       if (err) {

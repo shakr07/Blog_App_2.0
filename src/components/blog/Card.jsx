@@ -26,11 +26,23 @@ export const Card = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("/blogs");
+      //  console.log(response.data.data);
+        
         setBlogs(response.data.data);
+        const req = await axios.get("/getlike");
         const initialLikes = {};
-        response.data.data.forEach((blog) => {
-          initialLikes[blog._id] = blog.likesCount || 0;
-        });
+        const  res=req.data.Liked;
+       const a= res.map((item) => {
+        return initialLikes[item.blogId]=item.likesCount;
+       });
+       console.log(initialLikes);
+       
+        //.log(req.data.Liked[0].likesCount);
+        // response.data.data.forEach((blog) => {
+        //   initialLikes[blog._id] = blog.likesCount || 0;
+        // });
+        
+        
         setLikes(initialLikes);
       } catch (error) {
         setError("Error fetching blogs.");
@@ -96,6 +108,7 @@ export const Card = () => {
       toast.error("Failed to like post");
     }
   };
+
 
   if (error) return <Spinner />;
 

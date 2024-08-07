@@ -15,6 +15,7 @@ const {
   singleblogs,
   likeblogs,
   Account,
+  Likes,
 } = require("../controllers/authControllers");
 
 // Middleware of the sites
@@ -37,5 +38,6 @@ router.put("/update/:id", updateblogs);
 router.get("/single/:id",singleblogs);
 router.post("/like/:id/:username", likeblogs);
 router.get("/account", Account);
+router.get("/getlike",Likes);
 
 module.exports = router;
