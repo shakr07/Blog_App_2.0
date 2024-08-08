@@ -26,11 +26,19 @@ Blog App 2.0 is a full-stack application allowing users to create, edit, delete,
 ### Frontend
 
 1. Open the terminal.
-2. Run:
+2. Run for frontend:
    ```sh
    npm i
-   npm start
+   npm run start start
+   
+### backend
 
+1. Open the terminal.
+2. Run for frontend:
+   ```sh
+   cd backend
+   npm i
+   nodemon index.js
 
 ## Login and Sign Up
 
