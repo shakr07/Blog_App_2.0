@@ -1,4 +1,7 @@
 # Project overview
+##  Deployed app
+    ```sh
+    deploy-blog-22nb.vercel.app/
 ## Important
 
 - Initially, JWT Auth was used, but due to an error in establishing protected routes, the Context API is now used. When login is successful, all routes are accessible to the respective components. I got stuck and messed up the code, which is why I deleted the main branch and created a new branch named "completed."
