@@ -1,6 +1,6 @@
 # Project overview
 ##  Deployed app
-    ```sh
+     
     deploy-blog-22nb.vercel.app/
 ## Important
 
