@@ -1,4 +1,5 @@
 # Project overview
+###  frontend card design is copied from where else
 ##  Deployed app
      
     deploy-blog-22nb.vercel.app/
